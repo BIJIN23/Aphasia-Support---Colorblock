@@ -1,0 +1,163 @@
+<style>
+  .full--search-container{
+    display: flex;
+    justify-content: space-evenly;
+  }
+  .full--search-container .text-container,.form-container{
+    width:40%;
+  }
+  .search--input-field{
+    border: 0;
+    border-bottom: 2px solid;
+    height: 53.75px;
+    width: 100%;
+    margin-left: 3.8rem;
+    margin-right: 1.8rem;
+    color:#262855;
+    font-size: 1.5rem;
+  }
+  .search--input-field:focus-visible{
+    outline: none;
+    outline-offset: 0;
+    box-shadow: none;
+  }
+  .postcodeForm{
+    position:relative;
+    display:flex;
+    margin: 3.8rem 0 3rem 0;
+  }
+  .postcodeForm:before {
+    content: "";
+    display: inline-block;
+    background: url(https://cdn.shopify.com/s/files/1/0889/8773/0249/files/Location-pin.svg?v=1726827858) center center / cover no-repeat;
+    width: 3.3rem;
+    height: 3.3rem;
+    position: absolute;
+    top: 0.8rem;
+    left: 0;
+  }
+  .form-container a{
+      color: #262855;
+      text-decoration: none;
+      font-weight: 600;
+    }
+  
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+ 
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+    .form-container a{
+      color: #262855;
+      text-decoration: none;
+      font-weight: 600;
+      margin-left: 1.8rem;
+    }
+  }
+   @media screen and (max-width: 1200px){
+    .full--search-container .text-container,.full--search-container .form-container {
+        width: 45%;
+    }
+  }
+  @media screen and (max-width: 750px) {
+    .full--search-container{
+        display: block;
+      }
+    .full--search-container{
+      text-align:center;
+    }
+    .full--search-container .text-container,.full--search-container .form-container{
+        width:100%;
+      }
+  }
+  
+</style>
+<div class="page-width full--search-container color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding">
+  <div class="text-container">
+    <p class="h1">{{ section.settings['search-title'] }}</p>
+    <p>{{ section.settings['search-subtitle'] }}</p>
+  </div>
+  <div class="form-container">
+    <form id="postcodeForm" action="/pages/store-locator" method="get" class="postcodeForm">
+      <input
+        class="search--input-field"
+        type="text"
+        id="postcodeInput"
+        placeholder="Postcode e.g B16 6EA"
+        name="stockist-query"
+      >
+      <button type="submit" class="richtext-button-border button button--primary button-border-class ">Search</button>
+    </form>
+    <p> <a href="/pages/store-locator"> Or view all Groups ></a></p>
+   
+  </div>
+</div>
+
+<script>
+  const postcodeform = document.querySelector('#postcodeForm');
+
+  postcodeform.addEventListner('submit',function(event) {
+    event.preventDefault();
+    const postcode = document.querySelector('#postcodeInput').value;
+    // const targetUrl = `/store-locator?stockist-query=${encodeURIComponent(postcode)}`;
+
+  // Redirect to the store locator page with the postcode as a query parameter
+    window.location.href = targetUrl;
+  })
+</script>
+
+{% schema %}
+{
+  "name": "Search group",
+  "settings": [
+    {
+      "type": "text",
+      "id": "search-title",
+      "label": "Heading",
+      "default": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "search-subtitle",
+      "label": "Subtitle",
+      "default": "<p>Subtitle for the section</p>"
+    },
+    {
+    "type": "color_scheme",
+    "id": "color_scheme",
+    "label": "t:sections.all.colors.label",
+    "default": "scheme-1"
+  },
+     {
+    "type": "range",
+    "id": "padding_top",
+    "min": 0,
+    "max": 100,
+    "step": 4,
+    "unit": "px",
+    "label": "t:sections.all.padding.padding_top",
+    "default": 40
+  },
+  {
+    "type": "range",
+    "id": "padding_bottom",
+    "min": 0,
+    "max": 100,
+    "step": 4,
+    "unit": "px",
+    "label": "t:sections.all.padding.padding_bottom",
+    "default": 52
+  }
+  ],
+  "presets": [
+    {
+      "name": "Search group"
+    }
+  ]
+}
+{% endschema %}

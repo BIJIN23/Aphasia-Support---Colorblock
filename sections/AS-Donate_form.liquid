@@ -1,0 +1,66 @@
+{{ 'component--donate-form.css' | asset_url | stylesheet_tag }}
+<style>
+  .form-container{display:flex;padding: {{section.settings.padding_top}}px 5rem {{section.settings.padding_bottom}}px 5rem;}
+   @media screen and (max-width: 750px){padding: {{section.settings.padding_top}}px 1.5rem {{section.settings.padding_bottom}}px 1.5rem;}}
+</style>
+
+<div class="page-width form-container grid  grid--1-col grid--2-col-tablet">
+  <div class="donate-form grid__item">
+    {{ section.settings.donateform }}
+  </div>
+  {% if section.settings.contentId != blank %}
+    <div class="donate-richtext_area grid__item color-{{ section.settings.color_scheme }}">
+      {{ section.settings.contentId | default: '' }}
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Donate form",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "html",
+      "id": "donateform",
+      "label": "Input the Iframe of the Form"
+    },
+    {
+      "type": "richtext",
+      "id": "contentId",
+      "label": "Content"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color--scheme",
+      "default": "scheme-1",
+      "label": "Color scheme"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "default": 36,
+      "label": "Padding Top"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "default": 36,
+      "label": "Padding Bottom"
+    },
+  ],
+  "presets": [
+    {
+      "name": "AP-Donate form"
+    }
+  ]
+}
+{% endschema %}

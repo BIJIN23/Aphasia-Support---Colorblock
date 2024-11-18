@@ -1,0 +1,175 @@
+<style>
+  .logo--full-container{
+    border-radius: 3rem;
+    margin: 0 auto;
+    margin-bottom : 3rem;
+    padding: 30px;
+    transition: 700ms;
+    box-shadow: none;
+  }
+  .a-logo-container{
+    display: flex;
+    text-decoration: none;
+    color: #132B6F;
+    gap: 3rem;
+    align-items: center;
+  }
+  .logo-container .a:hover{
+    color:#0D41DF;
+  }
+  .logo--container{
+    padding: 15px;
+  }
+  hr{
+    margin: 0;
+  }
+  .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    }
+  @media screen and (max-width:750px){
+    .logo--full-container{
+      margin: 3rem;
+    }
+  }
+   @media screen and (min-width: 750px) {
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+    }
+</style>
+
+<div class="logo--full-container color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding collapsible-content-wrapper-narrow">
+  <div class="container-heading">
+    <h2 class=" {{ section.settings.heading_size }}">{{ section.settings.logo-heading }}</h2>
+  </div>
+  {% for blocks in section.blocks %}
+    <div class="logo--container">
+      <a href="{{ blocks.settings.logo-link }}" class="a-logo-container" {% if blocks.settings.new-tab %} target="_blank" {% endif %}>
+        {% if blocks.settings.logo-image %} 
+          <div style="
+            align-items: center;
+            display: flex;
+        ">{{ blocks.settings.logo-image | image_url: width:40, height: 40 | image_tag:  loading: 'lazy' }}</div>
+        {% endif %}
+      <div>{{ blocks.settings.logo-text }}</div>
+      </a>
+    </div>
+    <hr>
+  {% endfor %}
+</div>
+{% schema %}
+  {
+    "name": "Logo with text",
+    "tag": "section",
+    "settings": [
+      {
+        "type": "richtext",
+        "label": "Heading",
+        "id": "logo-heading",
+        "default": "<p>I want to ....</p>"
+      },
+      {
+        "type": "select",
+        "id": "heading_size",
+        "options": [
+          {
+            "value": "h2",
+            "label": "t:sections.all.heading_size.options__1.label"
+          },
+          {
+            "value": "h1",
+            "label": "t:sections.all.heading_size.options__2.label"
+          },
+          {
+            "value": "h0",
+            "label": "t:sections.all.heading_size.options__3.label"
+          },
+          {
+            "value": "hxl",
+            "label": "t:sections.all.heading_size.options__4.label"
+          },
+          {
+            "value": "hxxl",
+            "label": "t:sections.all.heading_size.options__5.label"
+          }
+        ],
+        "default": "h1",
+        "label": "t:sections.all.heading_size.label"
+      },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 52
+    }
+    ],
+    "blocks": [
+      {
+        "type": "logo-with-text",
+        "name": "Logo",
+        "settings": [
+          {
+            "type": "text",
+            "id": "logo-text",
+            "default": "Become a member",
+            "label": "Text for the logo"
+          },
+          {
+            "type": "image_picker",
+            "id": "logo-image",
+            "label": "Logo"
+          },
+          {
+            "type": "url",
+            "id": "logo-link",
+            "label": "Link "
+          },
+          {
+            "type": "checkbox",
+            "id": "new-tab",
+            "default": false,
+            "label": "Open in new tab"
+          }
+        ]
+      }
+    ],
+    "presets": [
+    {
+      "name": "Logo with text",
+      "blocks": [
+        {
+          "type": "logo-with-text"
+        },
+        {
+          "type": "logo-with-text"
+        },
+        {
+          "type": "logo-with-text"
+        }
+      ]
+    }
+  ]
+  }
+{% endschema %}

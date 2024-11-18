@@ -1,0 +1,144 @@
+<style>
+  .collage-heading-{{ section.id }}{
+    text-align:center;
+    padding-bottom: 6rem;
+  }
+  .col--container{
+      display: grid;
+      grid-template-columns: repeat(3, 1fr); /* 3 columns */
+      gap: 3rem;
+  }
+  .col-img{
+    width: 50%;
+    height: 100%;
+  }
+  .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    }
+  @media screen and (min-width: 750px) {
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+    }
+   @media screen and (max-width:990px){
+    .col--container{
+      grid-template-columns: repeat(2, 1fr);
+      gap: 3rem;
+    }
+  }
+  @media screen and (max-width:750px){
+    .col--container{
+      grid-template-columns: repeat(1, 1fr);
+      gap: 3rem;
+    }
+  }
+</style>
+
+<div class="page-width section-{{ section.id }}-padding color-{{ section.settings.col_color_scheme }}">
+  {% if  section.settings['collage-heading'] != blank %} 
+    <div class="collage-heading-{{ section.id }} {{ section.settings.heading_size }}">
+      {{ section.settings['collage-heading'] }}
+    </div>
+  {% endif %}
+  <div class="col--container">
+    {% for blocks in section.blocks %}
+      {% if blocks.settings.partners_image %}
+          {{ blocks.settings.partners_image | image_url: height: 240 | image_tag: class: 'col-img', loading: 'lazy' }}
+      {% else %}
+          {{ 'product-1' | placeholder_svg_tag }}
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Image_collage",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "collage-heading",
+      "label": "Partners Heading"
+    },
+    {
+        "type": "select",
+        "id": "heading_size",
+        "options": [
+          {
+            "value": "h2",
+            "label": "t:sections.all.heading_size.options__1.label"
+          },
+          {
+            "value": "h1",
+            "label": "t:sections.all.heading_size.options__2.label"
+          },
+          {
+            "value": "h0",
+            "label": "t:sections.all.heading_size.options__3.label"
+          },
+          {
+            "value": "hxl",
+            "label": "t:sections.all.heading_size.options__4.label"
+          },
+          {
+            "value": "hxxl",
+            "label": "t:sections.all.heading_size.options__5.label"
+          }
+        ],
+        "default": "h1",
+        "label": "t:sections.all.heading_size.label"
+      },
+     {
+      "type": "color_scheme",
+      "id": "col_color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+     {
+    "type": "range",
+    "id": "padding_top",
+    "min": 0,
+    "max": 100,
+    "step": 4,
+    "unit": "px",
+    "label": "t:sections.all.padding.padding_top",
+    "default": 40
+  },
+  {
+    "type": "range",
+    "id": "padding_bottom",
+    "min": 0,
+    "max": 100,
+    "step": 4,
+    "unit": "px",
+    "label": "t:sections.all.padding.padding_bottom",
+    "default": 52
+  }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name":"Patners Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "partners_image",
+          "label": "Partners Image "
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image Collage",
+      "blocks": [
+        {
+          "type": "image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
